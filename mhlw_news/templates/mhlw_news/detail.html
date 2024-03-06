@@ -1,0 +1,8 @@
+<h1>{{ news.title }} </h1>
+
+<ul>
+<h2> サマリ: {{ news.summary }} </h2>
+{% for choice in news.choice_set.all %}
+<li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
