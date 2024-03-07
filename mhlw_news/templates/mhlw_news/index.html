@@ -1,7 +1,7 @@
 {% if latest_news_list %}
     <ul>
     {% for news in latest_news_list %}
-        <li><a href="{% url 'detail' news.id %}">{{ news.title }}</a></li>
+        <li><a href="{% url 'mhlw_news:detail' news.id %}">{{ news.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

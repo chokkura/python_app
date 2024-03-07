@@ -1,8 +1,15 @@
 <h1>{{ news.title }} </h1>
+<h2>要約: {{ news.summary }} </h2>
 
-<ul>
-<h2> サマリ: {{ news.summary }} </h2>
+<form action="{% url 'mhlw_news:vote' news.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h1>あなたの意見を投票して下さい</h1></legend>
+{% if error_message %}<p><strong> {{ error_message }}</strong></p>{% endif %}
 {% for choice in news.choice_set.all %}
-<li>{{ choice.choice_text }}</li>
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
 {% endfor %}
-</ul>
+</fieldset>
+<input type="submit" value="Vote">
+</form>
