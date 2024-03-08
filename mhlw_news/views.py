@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.db.models import F
+from django.utils import timezone
 
 from .models import Choice, News
 
@@ -14,12 +15,18 @@ class IndexView(generic.ListView):
     context_object_name = "latest_news_list"
 
     def get_queryset(self):
-        """ 直近5記事を表示"""
-        return News.objects.order_by("-pub_date")[:5]
+        """ 直近5記事を表示(未来の記事は含まない) """
+        return News.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
     
 class DetailView(generic.DetailView):
     model = News
     template_name = "mhlw_news/detail.html"
+
+    def get_queryset(self):
+        """ 未来の記事は含まない """
+        return News.objects.filter(pub_date__lte=timezone.now())
+  
+
     
 class ResultsView(generic.DetailView):
     model = News
