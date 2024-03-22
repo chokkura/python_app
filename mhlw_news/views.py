@@ -1,5 +1,6 @@
 
 from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -33,6 +34,17 @@ def post_news(request):
                             {'form': form})
     
 
+def delete_news(request, news_id):
+    try:
+        news = News.objects.get(id=news_id)
+    except News.DoesNotExist:
+        raise Http404
+    if request.method == 'POST':
+        news.delete()
+        return HttpResponseRedirect(reverse('mhlw_news:index'))
+    else:
+        return TemplateResponse(request, 'mhlw_news/detail.html',
+                                {'id': news_id})
 class DetailView(generic.DetailView):
     model = News
     template_name = "mhlw_news/detail.html"

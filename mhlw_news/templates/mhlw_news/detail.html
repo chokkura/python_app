@@ -13,3 +13,8 @@
 </fieldset>
 <input type="submit" value="Vote">
 </form>
+
+<form action="{% url 'mhlw_news:delete_news' news.id %}" method="post">
+    {% csrf_token %}    
+    <input type="submit" value="削除">
+</form>
