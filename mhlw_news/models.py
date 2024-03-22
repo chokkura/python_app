@@ -27,6 +27,8 @@ class News(models.Model):
     pub_date = models.DateTimeField(verbose_name='作成日', default=now)
 
 
+
+
 class Choice(models.Model):
     # ニュースに対するコメント・投票
 

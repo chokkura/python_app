@@ -22,13 +22,16 @@ class IndexView(generic.ListView):
 # 新規記事を作成するページ
 def post_news(request):
     if request.method == 'POST':
+        print("test")
         form = NewNewsForm(request.POST)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(reverse("mhlw_news:index"))
     else:
         form = NewNewsForm()
     return TemplateResponse(request, 'mhlw_news/post_news.html',
                             {'form': form})
+    
 
 class DetailView(generic.DetailView):
     model = News
