@@ -18,3 +18,5 @@
     {% csrf_token %}    
     <input type="submit" value="削除">
 </form>
+
+<a href="{% url 'mhlw_news:edit_news' news.id %}">編集</a>

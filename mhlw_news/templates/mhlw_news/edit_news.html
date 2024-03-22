@@ -1,0 +1,8 @@
+{% load static %}
+
+<h1> 記事を編集</h1>
+<form action="{% url 'mhlw_news:edit_news' news.id %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+<input type="submit" value="更新">
+</form>

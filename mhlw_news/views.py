@@ -10,6 +10,8 @@ from django.utils import timezone
 
 from .models import Choice, News
 from .forms import NewNewsForm
+from .forms import EditNewsForm
+
 
 class IndexView(generic.ListView):
     # 厚生労働省のニュースを一覧表示
@@ -34,6 +36,7 @@ def post_news(request):
                             {'form': form})
     
 
+# 記事を削除
 def delete_news(request, news_id):
     try:
         news = News.objects.get(id=news_id)
@@ -45,6 +48,21 @@ def delete_news(request, news_id):
     else:
         return TemplateResponse(request, 'mhlw_news/detail.html',
                                 {'id': news_id})
+
+# 記事を編集
+def edit_news(request, news_id):
+    news = News.objects.get(id=news_id)
+    form = EditNewsForm(instance=news)
+    if request.method == 'POST':
+        form = EditNewsForm(request.POST)
+        if form.is_valid():
+            print("valid!!")
+            form.save()
+            return HttpResponseRedirect(reverse('mhlw_news:index'))
+    return TemplateResponse(request, 'mhlw_news/edit_news.html',
+                           {'form': form, 'news': news})
+
+
 class DetailView(generic.DetailView):
     model = News
     template_name = "mhlw_news/detail.html"
