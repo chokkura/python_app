@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from django.db import models
 from django.utils import timezone
+from django.utils.timezone import now
 
 class News(models.Model):
     # 厚生労働省のニュース
@@ -20,10 +21,11 @@ class News(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
     
-    title = models.CharField(max_length=30)
-    field = models.CharField(max_length=20, help_text='分野')
-    summary = models.CharField(max_length=200, help_text='記事の要約')
-    pub_date = models.DateTimeField("date published")
+    title = models.CharField(verbose_name='タイトル', max_length=30)
+    field = models.CharField(verbose_name='分野', max_length=20)
+    summary = models.CharField(verbose_name='要約', max_length=200)
+    pub_date = models.DateTimeField(verbose_name='作成日', default=now)
+
 
 class Choice(models.Model):
     # ニュースに対するコメント・投票

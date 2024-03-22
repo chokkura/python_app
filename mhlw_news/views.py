@@ -1,5 +1,6 @@
 
 from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -7,7 +8,7 @@ from django.db.models import F
 from django.utils import timezone
 
 from .models import Choice, News
-
+from .forms import NewNewsForm
 
 class IndexView(generic.ListView):
     # 厚生労働省のニュースを一覧表示
@@ -18,11 +19,16 @@ class IndexView(generic.ListView):
         """ 直近5記事を表示(未来の記事は含まない) """
         return News.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
     
-
-class NewNewsView(generic.ListView):
-    # 新規記事を作成するページ
-    model = News
-    template_name = "mhlw_news/new_news.html"
+# 新規記事を作成するページ
+def post_news(request):
+    if request.method == 'POST':
+        form = NewNewsForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = NewNewsForm()
+    return TemplateResponse(request, 'mhlw_news/post_news.html',
+                            {'form': form})
 
 class DetailView(generic.DetailView):
     model = News
