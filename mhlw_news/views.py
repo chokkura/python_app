@@ -18,6 +18,12 @@ class IndexView(generic.ListView):
         """ 直近5記事を表示(未来の記事は含まない) """
         return News.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
     
+
+class NewNewsView(generic.ListView):
+    # 新規記事を作成するページ
+    model = News
+    template_name = "mhlw_news/new_news.html"
+
 class DetailView(generic.DetailView):
     model = News
     template_name = "mhlw_news/detail.html"
@@ -50,3 +56,4 @@ def vote(request, news_id):
         # POSTデータの対処に成功すればHttpResponseRedirectで戻る
         # これによりBackボタンを押してデータが2回送信されるのを防げる
         return HttpResponseRedirect(reverse("mhlw_news:results", args=(news.id,)))
+
