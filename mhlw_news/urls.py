@@ -11,4 +11,5 @@ urlpatterns = [
   path("post_news", views.post_news, name="post_news"),
   path("delete_news/<int:news_id>", views.delete_news, name="delete_news"),
   path("edit_news/<int:news_id>", views.edit_news, name="edit_news"),
+  path("scrape_result", views.scrape_result, name="scrape_result"),
 ]

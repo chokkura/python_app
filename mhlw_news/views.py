@@ -11,6 +11,7 @@ from django.utils import timezone
 from .models import Choice, News
 from .forms import NewNewsForm
 from .forms import EditNewsForm
+from .get_html import scraping_mhlw
 
 
 class IndexView(generic.ListView):
@@ -96,3 +97,7 @@ def vote(request, news_id):
         # これによりBackボタンを押してデータが2回送信されるのを防げる
         return HttpResponseRedirect(reverse("mhlw_news:results", args=(news.id,)))
 
+def scrape_result(request):
+    latest_news_list = scraping_mhlw()
+    return TemplateResponse(request, 'mhlw_news/scrape_result.html',
+                            {"latest_news_list":latest_news_list })

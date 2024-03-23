@@ -1,0 +1,12 @@
+{% load static %}
+
+<p>スクレイピング結果</p>
+
+{% if latest_news_list %}
+    <ul>
+    {% for news in latest_news_list %}
+        <li>{{ news }}</li>
+    {% endfor %}
+    </ul>
+
+{% endif %}
